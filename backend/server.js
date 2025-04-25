@@ -11,6 +11,7 @@ import connectDB from "./config/db.js";
 import userRoute from "./routes/userRoute.js";
 import planRoute from "./routes/planRoute.js";
 import bookingRoute from "./routes/bookingRoute.js";
+import paymentRoutes from "./routes/paymentRoute.js";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/plans", planRoute);
 app.use("/bookings", bookingRoute);
+app.use("/payments", paymentRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

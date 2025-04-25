@@ -85,3 +85,14 @@ export const deleteBooking = async (bookingId) => {
     return false;
   }
 };
+
+//make payment
+export const makePayment = async (paymentDetails) => {
+  try {
+    const response = await axios.post(`${API_URL}/payment/makePayment`, paymentDetails);
+    return response.data;
+  } catch (error) {
+    console.error('Payment API error:', error);
+    throw error;
+  }
+};

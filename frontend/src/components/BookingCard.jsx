@@ -21,7 +21,7 @@ const BookingCard = ({ booking, onDelete }) => {
 
         <div className="flex justify-between items-center mt-4">
           <Link
-            to="/insurance-booking"
+            to="/payment"
             state={{
               planId: booking.planId,
               planName: booking.planName,
@@ -34,7 +34,7 @@ const BookingCard = ({ booking, onDelete }) => {
             }}
             className="bg-blue-700 text-white py-1 px-4 rounded-lg hover:bg-blue-800 transition"
           >
-            View Details
+            Pay Now
           </Link>
           {isAdmin && (
             <button

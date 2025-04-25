@@ -1,73 +1,124 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { makePayment } from '../services/api';
 
-const Payment = () => {
-  const [status, setStatus] = useState(null);
+const PaymentForm = () => {
+  const location = useLocation();
+  const {
+    type = '',
+    planName = '',
+    planId = '',
+  } = location.state || {};
 
-  const handlePayment = (e) => {
+  const [formData, setFormData] = useState({
+    typeOfBooking: type || '',
+    username: planName || '',
+    cardNumber: '',
+    expiryDate: '',
+    transactionId: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate payment
-    setTimeout(() => {
-      setStatus("success"); // you can toggle between 'success' or 'failure'
-    }, 1000);
+    try {
+      const paymentDetails = {
+        ...formData,
+        bookingId: planId,
+      };
+      const result = await makePayment(paymentDetails);
+      alert('Payment Successful!');
+      console.log(result);
+    } catch (error) {
+      alert('Payment Failed');
+      console.error(error);
+    }
   };
 
   return (
-    <div className="max-w-xl mx-auto py-10">
-      <h2 className="text-3xl font-semibold text-center text-purple-600 mb-6">
-        Payment Details
-      </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg space-y-6"
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-800">Secure Payment</h2>
 
-      <form onSubmit={handlePayment} className="bg-white shadow-md p-6 rounded-lg space-y-4">
-        <div>
-          <label className="block font-medium mb-2">Card Number</label>
+        {/* Booking Type and Name */}
+        <div className="space-y-4">
           <input
             type="text"
-            className="w-full p-2 border rounded"
-            placeholder="1234 5678 9012 3456"
+            name="typeOfBooking"
+            value={formData.typeOfBooking}
+            onChange={handleChange}
+            placeholder="Type of Booking"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Your Name"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div className="flex space-x-4">
-          <div className="w-1/2">
-            <label className="block font-medium mb-2">Expiry Date</label>
+
+        {/* Card Details */}
+        <div className="space-y-4">
+          <input
+            type="text"
+            name="cardNumber"
+            value={formData.cardNumber}
+            onChange={handleChange}
+            placeholder="Card Number (e.g., 1234 5678 9012 3456)"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <div className="flex gap-4">
             <input
               type="text"
-              className="w-full p-2 border rounded"
+              name="expiryDate"
+              value={formData.expiryDate}
+              onChange={handleChange}
               placeholder="MM/YY"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-          </div>
-          <div className="w-1/2">
-            <label className="block font-medium mb-2">CVV</label>
             <input
-              type="password"
-              className="w-full p-2 border rounded"
-              placeholder="123"
+              type="text"
+              name="transactionId"
+              value={formData.transactionId}
+              onChange={handleChange}
+              placeholder="Transaction ID"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-purple-500 text-white font-semibold p-2 rounded hover:bg-purple-600"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition duration-300"
         >
-          Pay Now
+          Pay ₹999
         </button>
+
+        {/* Disclaimer */}
+        <p className="text-center text-sm text-gray-500">
+          By proceeding, you agree to our <span className="text-blue-600 underline cursor-pointer">Terms & Conditions</span>.
+        </p>
       </form>
-
-      {status === "success" && (
-        <div className="mt-6 p-4 bg-green-100 text-green-800 border border-green-300 rounded">
-          Payment successful! 🎉 Your booking has been confirmed.
-        </div>
-      )}
-
-      {status === "failure" && (
-        <div className="mt-6 p-4 bg-red-100 text-red-800 border border-red-300 rounded">
-          Payment failed. Please try again.
-        </div>
-      )}
     </div>
   );
 };
 
-export default Payment;
+export default PaymentForm;
