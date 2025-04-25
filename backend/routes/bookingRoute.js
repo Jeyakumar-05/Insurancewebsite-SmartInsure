@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBooking, getUserBookings } from '../controllers/bookingController.js';
+import { createBooking, getUserBookings,deleteBookingController } from '../controllers/bookingController.js';
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.post('/', createBooking);
 
 // Get bookings for a user
 router.get('/user/:userId', getUserBookings);
+
+// Delete a booking by ID
+router.delete('/:bookingId', deleteBookingController);
 
 export default router;

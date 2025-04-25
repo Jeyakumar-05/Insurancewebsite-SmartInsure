@@ -46,7 +46,6 @@ export const deletePlan = async (id) => {
   }
 };
 
-
 //create booking
 
 export const createBooking = async (bookingData) => {
@@ -54,20 +53,35 @@ export const createBooking = async (bookingData) => {
     const res = await axios.post(`${API_URL}/bookings`, bookingData);
     return res.data;
   } catch (error) {
-    console.error('Booking error:', error);
+    console.error("Booking error:", error);
     return null;
   }
 };
 
-//fetch bookings
-// export const fetchUserBookings = async (userId) => {
-//   try {
-//     const res = await fetch(`/api/bookings/${userId}`);
-//     const data = await res.json();
-//     return data;
-//   } catch (err) {
-//     console.error("Fetch bookings error", err);
-//     return []; // fallback to empty array
-//   }
-// };
+// Fetch bookings for a specific user
+export const fetchUserBookings = async (userId) => {
+  try {
+    const res = await fetch(`${API_URL}/bookings/user/${userId}`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Fetch bookings error", err);
+    return []; // fallback to empty array
+  }
+};
 
+// Delete a booking by its ID
+export const deleteBooking = async (bookingId) => {
+  try {
+    const res = await fetch(`${API_URL}/bookings/${bookingId}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.error("Delete booking error", err);
+    return false;
+  }
+};
