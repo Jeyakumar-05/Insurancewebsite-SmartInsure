@@ -60,7 +60,7 @@ const InsuranceSelection = () => {
   return (
     <div className="bg-blue-50 min-h-screen py-10">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Book Your Insurance</h1>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Select Your Insurance Plan</h2>
 
         {isAdmin && <AddPlan onAdd={handleAddPlan} />}
 

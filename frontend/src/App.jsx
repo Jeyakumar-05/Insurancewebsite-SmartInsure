@@ -17,25 +17,17 @@ const App = () => {
         <Routes>
           {/* Routes wrapped in WebLayout */}
           <Route element={<WebLayout />}>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/home" element={<Home />} />
-            <Route path="/insurance-selection" element={<InsuranceSelection />} />
-            <Route path="/insurance-booking" element={<InsuranceBooking />} />
-            <Route
-              path="/payment"
-              element={
-                 <PrivateRoute>
-                  <Payment />
-                 </PrivateRoute>
-              }
-            />
+            {/* All protected routes inside PrivateRoute */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route
+                path="/insurance-selection"
+                element={<InsuranceSelection />}
+              />
+              <Route path="/insurance-booking" element={<InsuranceBooking />} />
+              <Route path="/payment" element={<Payment />} />
+            </Route>
           </Route>
 
           {/* Auth routes */}

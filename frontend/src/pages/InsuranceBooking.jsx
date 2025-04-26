@@ -89,7 +89,7 @@ const MyBookings = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-6">Book Insurance</h2>
+      <h1 className="text-2xl font-semibold text-center mb-6">Book Your Insurance Plan</h1>
 
       {/* Booking Form */}
       <form onSubmit={handleBooking} className="bg-white p-6 rounded-md shadow-md mb-10 space-y-4">
@@ -125,7 +125,8 @@ const MyBookings = () => {
         />
         <input
           type="text"
-          value={`₹${planDetails.price}`}
+          value={planDetails.price}
+          // value={`₹${planDetails.price}`}
           readOnly
           className="w-full p-2 border border-gray-300 rounded"
           placeholder="Price"
@@ -139,7 +140,8 @@ const MyBookings = () => {
         />
         <input
           type="text"
-          value={`₹${planDetails.premium}`}
+          value={planDetails.premium}
+          // value={`₹${planDetails.premium}`}
           readOnly
           className="w-full p-2 border border-gray-300 rounded"
           placeholder="Premium"

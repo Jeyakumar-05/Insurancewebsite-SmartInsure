@@ -6,12 +6,13 @@ export const makePayment = async (req, res) => {
       bookingId,
       typeOfBooking,
       username,
+      amount,
       cardNumber,
       expiryDate,
       transactionId,
     } = req.body;
 
-    if (!bookingId || !typeOfBooking || !username || !cardNumber || !expiryDate || !transactionId) {
+    if (!bookingId || !amount || !typeOfBooking || !username || !cardNumber || !expiryDate || !transactionId) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -21,6 +22,7 @@ export const makePayment = async (req, res) => {
       bookingId,
       typeOfBooking,
       username,
+      amount,
       cardNumber: maskedCard,
       expiryDate,
       transactionId,

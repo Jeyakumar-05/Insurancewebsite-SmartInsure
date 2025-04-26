@@ -1,5 +1,6 @@
 import React from "react";
 import FloatingChatbot from "../components/FloatingChatbot";
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -21,15 +22,15 @@ const Home = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="p-6 rounded-2xl shadow-lg bg-blue-50 hover:shadow-xl transition duration-300">
-          <h3 className="text-xl font-bold text-blue-700 mb-2">Easy Policy Management</h3>
+          <h3 className="text-xl font-bold text-blue-600 mb-2">Easy Policy Management</h3>
           <p>Manage your policies, claims, and payments seamlessly through our intuitive platform.</p>
         </div>
         <div className="p-6 rounded-2xl shadow-lg bg-blue-50 hover:shadow-xl transition duration-300">
-          <h3 className="text-xl font-bold text-blue-700 mb-2">Expert Guidance</h3>
+          <h3 className="text-xl font-bold text-blue-600 mb-2">Expert Guidance</h3>
           <p>Our experts help you pick the best plan according to your unique needs and life stage.</p>
         </div>
         <div className="p-6 rounded-2xl shadow-lg bg-blue-50 hover:shadow-xl transition duration-300">
-          <h3 className="text-xl font-bold text-blue-700 mb-2">24/7 Support</h3>
+          <h3 className="text-xl font-bold text-blue-600 mb-2">24/7 Support</h3>
           <p>Our team is always available to assist you with queries, claims, and emergencies.</p>
         </div>
       </div>
@@ -40,8 +41,8 @@ const Home = () => {
       <h2 className="text-3xl font-semibold mb-6">Choose Your Coverage</h2>
       <p className="mb-8 text-gray-700">Select a policy type that suits you best.</p>
       <div className="flex justify-center gap-6 flex-wrap">
-        <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">Individual Policy</button>
-        <button className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">Family Policy</button>
+        <Link to="/insurance-selection" className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">Individual Policy</Link>
+        <Link to="/insurance-selection" className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-600">Family Policy</Link>
       </div>
     </section>
 
@@ -61,9 +62,14 @@ const Home = () => {
             key={index}
             className="bg-white border border-gray-200 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition duration-300 hover:scale-105"
           >
-            <h3 className="text-2xl font-bold text-indigo-600 mb-3">{plan.name}</h3>
+            <h3 className="text-2xl font-bold text-blue-600 mb-3">{plan.name}</h3>
             <p className="text-gray-600 mb-5 text-sm leading-relaxed">{plan.desc}</p>
-            <button className="text-indigo-600 font-semibold hover:underline">Learn More</button>
+            <Link 
+            to="/insurance-selection"
+            className="text-blue-700 font-semibold hover:underline"
+            >
+            Learn More
+            </Link>
           </div>
         ))}
       </div>

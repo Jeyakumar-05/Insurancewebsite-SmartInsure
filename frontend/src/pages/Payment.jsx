@@ -3,17 +3,19 @@ import { useLocation } from 'react-router-dom';
 import { makePayment } from '../services/api';
 
 const Payment = () => {
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const username = userData?.username || '';
+
   const location = useLocation();
   const {
     type = '',
-    planName = '',
     planId = '',
     premium = 0,
   } = location.state || {};
 
   const [formData, setFormData] = useState({
     typeOfBooking: type,
-    username: planName,
+    username: username,
     amount: premium,
     cardNumber: '',
     expiryDate: '',
@@ -37,7 +39,7 @@ const Payment = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY,
       amount: razorpayAmount,
       currency: 'INR',
-      name: 'INSUREWISE',
+      name: 'SmartInsure',
       description: 'Insurance Payment',
       handler: async function (response) {
         try {
@@ -48,19 +50,26 @@ const Payment = () => {
           };
 
           // Save payment automatically after successful Razorpay payment
+          
           const result = await makePayment(updatedFormData);
           alert('Payment successful and recorded! Transaction ID: ' + response.razorpay_payment_id);
           console.log(result);
 
-          // Optional: you can redirect to "My Bookings" page or Home
-          // navigate('/my-bookings');
+          setFormData({
+            typeOfBooking: '',
+            username: '',
+            amount: 0,
+            cardNumber: '',
+            expiryDate: '',
+            transactionId: '',
+          });
+          
         } catch (error) {
           console.error('Failed to record payment:', error);
           alert('Payment was successful, but failed to record. Please contact support.');
         }
       },
       prefill: {
-        name: formData.username,
         email: 'test@example.com',
         contact: '9999999999',
       },
@@ -104,7 +113,7 @@ const Payment = () => {
           name="cardNumber"
           value={formData.cardNumber}
           onChange={handleChange}
-          placeholder="Card Number (optional)"
+          placeholder="Card Number"
           className="w-full p-3 border border-gray-300 rounded-lg"
         />
         <input
@@ -112,7 +121,7 @@ const Payment = () => {
           name="expiryDate"
           value={formData.expiryDate}
           onChange={handleChange}
-          placeholder="MM/YY (optional)"
+          placeholder="MM/YY"
           className="w-full p-3 border border-gray-300 rounded-lg"
         />
 

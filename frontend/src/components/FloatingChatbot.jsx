@@ -20,15 +20,22 @@ const FloatingChatbot = () => {
     setIsLoading(true);
 
     try {
-      const result = await model.generateContent(userInput);
+      const instruction = `You are SmartInsure's virtual assistant. 
+Only answer questions related to SmartInsure's insurance plans, services, booking process, pricing, policies, or related queries. 
+If the question is not related to SmartInsure, politely respond: "I'm here to assist you with SmartInsure-related queries only!"`;
+
+      const prompt = `${instruction}\n\nUser: ${userInput}`;
+
+      const result = await model.generateContent(prompt);
       const response = await result.response;
-      setChatHistory([
-        ...chatHistory,
+
+      setChatHistory((prev) => [
+        ...prev,
         { type: "user", message: userInput },
         { type: "bot", message: response.text() },
       ]);
-    } catch {
-      console.error("Error sending message");
+    } catch (error) {
+      console.error("Error sending message", error);
     } finally {
       setUserInput("");
       setIsLoading(false);
