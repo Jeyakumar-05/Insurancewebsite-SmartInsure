@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { makePayment } from '../services/api';
 
-const PaymentForm = () => {
+const Payment = () => {
   const location = useLocation();
   const {
     type = '',
     planName = '',
     planId = '',
+    premium = 0,
   } = location.state || {};
 
   const [formData, setFormData] = useState({
-    typeOfBooking: type || '',
-    username: planName || '',
+    typeOfBooking: type,
+    username: planName,
+    amount: premium,
     cardNumber: '',
     expiryDate: '',
     transactionId: '',
@@ -23,102 +25,116 @@ const PaymentForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const paymentDetails = {
-        ...formData,
-        bookingId: planId,
-      };
-      const result = await makePayment(paymentDetails);
-      alert('Payment Successful!');
-      console.log(result);
-    } catch (error) {
-      alert('Payment Failed');
-      console.error(error);
+  const handleRazorpayPayment = () => {
+    if (!formData.username || !formData.typeOfBooking) {
+      alert('Please fill in your name and booking type before proceeding.');
+      return;
     }
+
+    const razorpayAmount = formData.amount * 100;
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      amount: razorpayAmount,
+      currency: 'INR',
+      name: 'INSUREWISE',
+      description: 'Insurance Payment',
+      handler: async function (response) {
+        try {
+          const updatedFormData = {
+            ...formData,
+            transactionId: response.razorpay_payment_id,
+            bookingId: planId,
+          };
+
+          // Save payment automatically after successful Razorpay payment
+          const result = await makePayment(updatedFormData);
+          alert('Payment successful and recorded! Transaction ID: ' + response.razorpay_payment_id);
+          console.log(result);
+
+          // Optional: you can redirect to "My Bookings" page or Home
+          // navigate('/my-bookings');
+        } catch (error) {
+          console.error('Failed to record payment:', error);
+          alert('Payment was successful, but failed to record. Please contact support.');
+        }
+      },
+      prefill: {
+        name: formData.username,
+        email: 'test@example.com',
+        contact: '9999999999',
+      },
+      theme: {
+        color: '#3399cc',
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => e.preventDefault()} // prevent default submit
         className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg space-y-6"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800">Secure Payment</h2>
 
-        {/* Booking Type and Name */}
-        <div className="space-y-4">
-          <input
-            type="text"
-            name="typeOfBooking"
-            value={formData.typeOfBooking}
-            onChange={handleChange}
-            placeholder="Type of Booking"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+        <input
+          type="text"
+          name="typeOfBooking"
+          value={formData.typeOfBooking}
+          onChange={handleChange}
+          placeholder="Type of Booking"
+          className="w-full p-3 border border-gray-300 rounded-lg"
+          required
+        />
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Your Name"
+          className="w-full p-3 border border-gray-300 rounded-lg"
+          required
+        />
+        <input
+          type="text"
+          name="cardNumber"
+          value={formData.cardNumber}
+          onChange={handleChange}
+          placeholder="Card Number (optional)"
+          className="w-full p-3 border border-gray-300 rounded-lg"
+        />
+        <input
+          type="text"
+          name="expiryDate"
+          value={formData.expiryDate}
+          onChange={handleChange}
+          placeholder="MM/YY (optional)"
+          className="w-full p-3 border border-gray-300 rounded-lg"
+        />
 
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Your Name"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+        <div className="text-center font-medium text-lg text-gray-700">
+          Premium Amount: ₹{formData.amount}
         </div>
 
-        {/* Card Details */}
-        <div className="space-y-4">
-          <input
-            type="text"
-            name="cardNumber"
-            value={formData.cardNumber}
-            onChange={handleChange}
-            placeholder="Card Number (e.g., 1234 5678 9012 3456)"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-
-          <div className="flex gap-4">
-            <input
-              type="text"
-              name="expiryDate"
-              value={formData.expiryDate}
-              onChange={handleChange}
-              placeholder="MM/YY"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <input
-              type="text"
-              name="transactionId"
-              value={formData.transactionId}
-              onChange={handleChange}
-              placeholder="Transaction ID"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-        </div>
-
-        {/* Submit Button */}
         <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition duration-300"
+          type="button"
+          onClick={handleRazorpayPayment}
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition duration-300"
         >
-          Pay ₹999
+          Pay ₹{formData.amount} with Razorpay
         </button>
 
-        {/* Disclaimer */}
         <p className="text-center text-sm text-gray-500">
-          By proceeding, you agree to our <span className="text-blue-600 underline cursor-pointer">Terms & Conditions</span>.
+          By proceeding, you agree to our{' '}
+          <span className="text-blue-600 underline cursor-pointer">Terms & Conditions</span>.
         </p>
       </form>
     </div>
   );
 };
 
-export default PaymentForm;
+export default Payment;
