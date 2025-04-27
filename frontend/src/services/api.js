@@ -3,7 +3,8 @@ import axios from "axios";
 const API_URL = "https://smartinsure-backend.onrender.com";
 
 export const api = axios.create({
-  baseURL: "http://localhost:7777/api/v1/user",
+  // baseURL: "http://localhost:7777/api/v1/user",
+  baseURL: "https://smartinsure-backend.onrender.com/api/v1/user",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
