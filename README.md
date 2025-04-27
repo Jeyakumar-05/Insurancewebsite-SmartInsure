@@ -1,7 +1,6 @@
 # SmartInsure - Insurance Website
 
-SmartInsure is a full-stack insurance management website where users can browse insurance plans, book policies, make secure payments via Razorpay, and download payment confirmation PDFs.  
-Admins can manage insurance plans and view bookings easily via a protected admin dashboard.
+SmartInsure is a comprehensive full-stack platform for managing insurance. Users can explore various insurance plans, book policies, securely pay via Razorpay, and download payment confirmation PDFs. Admins have easy access to manage insurance plans and view user bookings through a secure, protected dashboard.
 
 ## Tech Stack
 - **Frontend:** React, React Router, Tailwind CSS
