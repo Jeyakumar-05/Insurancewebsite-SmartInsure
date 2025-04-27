@@ -70,6 +70,19 @@ export const fetchUserBookings = async (userId) => {
   }
 };
 
+// Fetch all bookings (Admin use only)
+export const fetchAllBookings = async () => {
+  try {
+    const res = await fetch(`${API_URL}/bookings/all`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Fetch all bookings error", err);
+    return []; // fallback to empty array
+  }
+};
+
+
 // Delete a booking by its ID
 export const deleteBooking = async (bookingId) => {
   try {
