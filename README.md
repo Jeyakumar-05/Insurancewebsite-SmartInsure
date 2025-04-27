@@ -1,4 +1,4 @@
-# SmartInsure - Insurance Website with AI Chatbot
+# SmartInsure - Insurance Website with Chatbot AI Assist
 
 SmartInsure is a comprehensive full-stack platform for managing insurance. Users can explore various insurance plans, book policies, securely pay via Razorpay, and download payment confirmation PDFs. Admins have easy access to manage insurance plans and view user bookings through a secure, protected dashboard.
 
