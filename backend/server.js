@@ -27,7 +27,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    // origin: "http://localhost:5173",
+    origin: "https://insurancewebsite-smart-insure.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],

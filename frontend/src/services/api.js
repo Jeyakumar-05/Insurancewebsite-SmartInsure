@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_URL = "http://localhost:7777";
+// const API_URL = "http://localhost:7777";
+const API_URL = "https://smartinsure-backend.onrender.com";
 
 export const api = axios.create({
   baseURL: "http://localhost:7777/api/v1/user",
