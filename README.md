@@ -20,7 +20,7 @@ Admins can manage insurance plans and view bookings easily via a protected admin
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/insurancewebsite-smartinsure.git
+   git clone https://github.com/your-username/Insurancewebsite-SmartInsure.git
    ```
 2. Navigate to the project directory:
    ```sh
