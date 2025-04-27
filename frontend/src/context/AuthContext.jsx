@@ -52,8 +52,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(data));
       navigate("/");
     } catch (error) {
-      console.log("Invalid password. Please refill and try again.");
-    return { success: false, message: "Invalid password. Please refill and try again." };
+    return { success: false, message: "Enter valid email and password" };
     } finally {
       setLoading(false);
     }
