@@ -43,8 +43,20 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Please fill the fields");
   }
   const existingUser = await Users.findOne({ email });
+
+  if (!existingUser) {
+    res.status(400).json({ message: "User not found with this email." });
+    return;
+  }
+
   if (existingUser) {
     const validPassword = await bcrypt.compare(password, existingUser.password);
+
+    if (!validPassword) {
+      res.status(400).json({ message: "Invalid credentials, please try again." });
+      return;
+    }
+
     if (validPassword) {
       generateToken(res, existingUser._id);
       res.status(201).json({
