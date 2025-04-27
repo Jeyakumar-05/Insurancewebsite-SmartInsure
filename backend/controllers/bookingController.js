@@ -43,6 +43,23 @@ export const getUserBookings = async (req, res) => {
     }
   };
 
+  // Get all bookings for admin
+export const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find().sort({ bookedAt: -1 }); // Sort bookings by date descending
+    
+    if (bookings.length === 0) {
+      return res.status(404).json({ message: "No bookings found" }); // If no bookings exist
+    }
+    
+    res.status(200).json(bookings); // Return the bookings
+  } catch (err) {
+    console.error("Get all bookings error:", err);
+    res.status(500).json({ message: "Failed to fetch all bookings" });
+  }
+};
+
+
   export const deleteBookingController = async (req, res) => {
     try {
       const { bookingId } = req.params;
