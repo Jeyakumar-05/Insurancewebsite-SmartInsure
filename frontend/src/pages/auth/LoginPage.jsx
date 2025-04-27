@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
+
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
 
@@ -13,16 +14,25 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await loginUser(email, password);
-      console.log("Login successful");
+      const response = await loginUser(email, password);
+      
+      if (response && !response.success) {
+        // If the response exists but the login is not successful
+        const errorMessage = response.message || "Invalid email or password.";
+        alert(errorMessage);
+      } 
+      // Clear the form fields
       setEmail("");
       setPassword("");
+      
     } catch (error) {
       console.log(`Error during login: ${error}`);
+      alert("An error occurred during login. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex justify-center items-center px-4 bg-gradient-to-br from-blue-800 to-blue-600">
@@ -46,14 +56,20 @@ const LoginPage = () => {
               </svg>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">SmartInsure Login</h1>
-          <p className="text-blue-100">Secure access to your insurance portal</p>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            SmartInsure Login
+          </h1>
+          <p className="text-blue-100">
+            Secure access to your insurance portal
+          </p>
         </div>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Email Input */}
           <div>
-            <label className="block text-blue-100 mb-2 font-medium">Email</label>
+            <label className="block text-blue-100 mb-2 font-medium">
+              Email
+            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
@@ -78,7 +94,9 @@ const LoginPage = () => {
 
           {/* Password Input */}
           <div>
-            <label className="block text-blue-100 mb-2 font-medium">Password</label>
+            <label className="block text-blue-100 mb-2 font-medium">
+              Password
+            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
@@ -102,7 +120,6 @@ const LoginPage = () => {
                 placeholder="••••••••"
               />
             </div>
-            
           </div>
 
           {/* Submit Button */}

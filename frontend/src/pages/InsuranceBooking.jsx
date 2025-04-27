@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { createBooking ,fetchUserBookings, deleteBooking} from '../services/api';
 import { toast } from 'sonner';
 import { generatePDF } from '../utils/pdfGenerator';
-import BookingCard from '../components/BookingCard';
+import BookingCard from '../components/BookingCard'; 
 
 const MyBookings = () => {
   const location = useLocation();
