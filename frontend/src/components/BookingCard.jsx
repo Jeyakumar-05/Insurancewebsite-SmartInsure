@@ -1,5 +1,5 @@
 import React from 'react';
-import { XIcon, ShieldCheckIcon, CalendarIcon } from 'lucide-react';
+import { XIcon, ShieldCheckIcon, CalendarIcon, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BookingCard = ({ booking, onDelete }) => {
@@ -13,6 +13,10 @@ const BookingCard = ({ booking, onDelete }) => {
         <p className="text-gray-500 mb-4 italic">{booking.conditions || 'No special conditions.'}</p>
 
         <div className="space-y-2 text-gray-700">
+          <div className="flex items-center">
+            <User size={18} className="text-blue-600 mr-2" />
+            <span><span className="font-semibold">UserName:</span> {booking.username}</span>
+          </div>
           <div className="flex items-center">
             <ShieldCheckIcon size={18} className="text-blue-600 mr-2" />
             <span><span className="font-semibold">Type:</span> {booking.type}</span>

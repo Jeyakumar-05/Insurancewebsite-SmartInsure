@@ -8,6 +8,9 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logoutUser } = useContext(AuthContext);
 
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = userData?.role === 'admin';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -22,12 +25,20 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const navdata = [
+  let navdata = [
     { title: "Home", path: "/home" },
     { title: "Insurance Selection", path: "/insurance-selection" },
     { title: "My Bookings", path: "/insurance-booking" },
     { title: "Payment", path: "/payment" },
   ];
+
+  if(isAdmin){
+    navdata = [
+      { title: "Home", path: "/home" },
+      { title: "Insurance Plans", path: "/insurance-selection" },
+      { title: "User Bookings", path: "/insurance-booking" },
+    ];
+  }
 
   return (
     <div className="w-full h-[4rem] flex items-center justify-between bg-gradient-to-br from-blue-600 to-blue-500 shadow-md px-4 z-50 relative">

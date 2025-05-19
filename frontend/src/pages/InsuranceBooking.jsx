@@ -8,6 +8,7 @@ import BookingCard from '../components/BookingCard';
 const MyBookings = () => {
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user'));
+  const isUser = user?.role === 'user';
 
   const [email, setEmail] = useState(user?.email || '');
   const [username, setUsername] = useState(user?.username || '');
@@ -92,9 +93,10 @@ const MyBookings = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 px-4">
-      <h1 className="text-2xl font-semibold text-center mb-6">Your Bookings</h1>
+      <h1 className="text-2xl font-semibold text-center mb-6">{ isUser ? 'Your Bookings' : 'User Bookings'  }</h1>
 
       {/* Booking Form */}
+      { isUser && (
       <form onSubmit={handleBooking} className="bg-white p-6 rounded-md shadow-md mb-10 space-y-4">
         <input
           type="text"
@@ -122,11 +124,12 @@ const MyBookings = () => {
         <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
           Confirm Booking
         </button>
-      </form>
+      </form>)
+}
 
       {/* Display bookings */}
       <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4">Your Bookings</h3>
+        <h3 className="text-xl font-semibold mb-4">{ isUser ? 'Your Bookings' : 'User Bookings'  }</h3>
         <div className='flex flex-wrap justify-center gap-4'>
           {userBookings.length > 0 ? (
             userBookings.map((booking) => (
